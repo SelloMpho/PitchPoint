@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+'use client'; 
+import { useState, useEffect } from 'react'; 
+import Link from 'next/link'
 
 // Mock data interfaces
 interface User {
