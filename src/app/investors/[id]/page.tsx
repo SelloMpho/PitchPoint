@@ -1,6 +1,6 @@
 'use client'; 
 import { useState, useEffect } from 'react'; 
-import Link from 'next/link'
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
 
@@ -216,7 +216,7 @@ Our investment approach is hands-on, providing not just capital but also strateg
                           type="text"
                           id="subject"
                           className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-slate-400 transition-all duration-200"
-                          placeholder="I'd like to discuss investment opportunities"
+                          placeholder="I&apos;d like to discuss investment opportunities"
                         />
                       </div>
                       <div className="mb-6">
@@ -225,7 +225,7 @@ Our investment approach is hands-on, providing not just capital but also strateg
                           id="message"
                           rows={4}
                           className="block w-full px-4 py-3 bg-slate-800/80 border border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-white placeholder-slate-400 transition-all duration-200 resize-none"
-                          placeholder="Please share details about your startup, funding needs, and why you think there's a good fit with this investor..."
+                          placeholder="Please share details about your startup, funding needs, and why you think there&apos;s a good fit with this investor..."
                         ></textarea>
                       </div>
                       <div className="mt-8 sm:flex sm:flex-row-reverse">
@@ -663,5 +663,4 @@ function Footer() {
       </div>
     </footer>
   );
-  
 }

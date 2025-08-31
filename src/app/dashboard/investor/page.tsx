@@ -1,6 +1,6 @@
 'use client'; 
 import { useState, useEffect } from 'react'; 
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 
@@ -295,9 +295,9 @@ export default function InvestorDashboard() {
                     {investor.website && (
                       <div>
                         <h3 className="text-slate-400 text-sm mb-1">WEBSITE</h3>
-                        <a href={investor.website} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 transition-colors duration-200">
+                        <Link href={investor.website} target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 transition-colors duration-200">
                           {investor.website}
-                        </a>
+                        </Link>
                       </div>
                     )}
                   </div>
@@ -320,7 +320,7 @@ export default function InvestorDashboard() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <p className="text-slate-300 text-lg mb-4">You haven't completed your investor profile yet.</p>
+              <p className="text-slate-300 text-lg mb-4">You haven&apos;t completed your investor profile yet.</p>
               <button 
                 onClick={() => router.push('/investor/create')} 
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl"
@@ -402,7 +402,7 @@ export default function InvestorDashboard() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                   </svg>
                 </div>
-                <p className="text-slate-300 text-lg mb-4">You haven't bookmarked any startups yet.</p>
+                <p className="text-slate-300 text-lg mb-4">You haven&apos;t bookmarked any startups yet.</p>
                 <Link 
                   href="/startups"
                   className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors duration-200 group flex items-center justify-center mx-auto"

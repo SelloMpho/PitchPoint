@@ -1,6 +1,6 @@
 'use client'; 
 import { useState, useEffect } from 'react'; 
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 // Define TypeScript interfaces for type safety
@@ -39,8 +39,8 @@ export default function InvestorProfilePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [investor, setInvestor] = useState<any>(null);
   
@@ -254,8 +254,8 @@ export default function InvestorProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setError('');
-    setSuccess('');
+    setError(null);
+    setSuccess(null);
     
     try {
       // Validate form data

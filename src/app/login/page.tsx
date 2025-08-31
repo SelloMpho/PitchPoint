@@ -1,8 +1,75 @@
 'use client'; 
 import { useState, useEffect } from 'react'; 
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+
+// Mock supabase for demo purposes
+const mockSupabase = {
+  auth: {
+    signInWithPassword: async ({ email, password }: { email: string; password: string }) => {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock successful login for different roles
+      if (email === 'entrepreneur@example.com') {
+        return {
+          data: {
+            user: {
+              id: 'user1'
+            }
+          },
+          error: null
+        };
+      } else if (email === 'investor@example.com') {
+        return {
+          data: {
+            user: {
+              id: 'user2'
+            }
+          },
+          error: null
+        };
+      } else if (email === 'admin@example.com') {
+        return {
+          data: {
+            user: {
+              id: 'user3'
+            }
+          },
+          error: null
+        };
+      } else {
+        throw new Error('Invalid email or password');
+      }
+    },
+    signInWithOAuth: async ({ provider, options }: { provider: string; options: { redirectTo: string } }) => {
+      // Simulate OAuth login
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return { error: null };
+    }
+  },
+  from: (table: string) => ({
+    select: (columns: string) => ({
+      eq: (column: string, value: string) => ({
+        single: async () => {
+          // Simulate API call
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          // Mock user data based on ID
+          if (value === 'user1') {
+            return { data: { role: 'entrepreneur' }, error: null };
+          } else if (value === 'user2') {
+            return { data: { role: 'investor' }, error: null };
+          } else if (value === 'user3') {
+            return { data: { role: 'admin' }, error: null };
+          } else {
+            return { data: null, error: { message: 'User not found' } };
+          }
+        }
+      })
+    })
+  })
+};
 
 export default function Login() {
   const router = useRouter();
@@ -71,7 +138,7 @@ export default function Login() {
     setErrors({});
     
     try {
-      const {  data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await mockSupabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
       });
@@ -81,7 +148,7 @@ export default function Login() {
       }
 
       // Get user role from public.users
-      const {  data: userData, error: userError } = await supabase
+      const { data: userData, error: userError } = await mockSupabase
         .from('users')
         .select('role')
         .eq('id', data.user.id)
@@ -364,14 +431,15 @@ export default function Login() {
               <button
                 type="button"
                 onClick={async () => {
-                  const { error } = await supabase.auth.signInWithOAuth({
-                    provider: 'google',
-                    options: {
-                      redirectTo: `${window.location.origin}/auth/callback`,
-                    },
-                  });
-                  if (error) {
-                    setErrors({ form: error.message });
+                  // Simulate OAuth login
+                  setIsLoading(true);
+                  try {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    router.push('/dashboard');
+                  } catch (error: any) {
+                    setErrors({ form: error.message || 'Failed to login with Google' });
+                  } finally {
+                    setIsLoading(false);
                   }
                 }}
                 className="w-full flex justify-center items-center py-3 px-4 border border-slate-600 rounded-xl shadow-sm bg-slate-700/50 text-sm font-medium text-slate-300 hover:bg-slate-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"

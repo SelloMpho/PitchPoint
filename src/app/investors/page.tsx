@@ -1,6 +1,6 @@
 'use client'; 
 import { useState, useEffect } from 'react'; 
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 
@@ -690,19 +690,19 @@ function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-slate-300 mb-4">Resources</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Blog</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Guides</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Webinars</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Events</a></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Blog</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Guides</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Webinars</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Events</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-sm font-semibold text-slate-300 mb-4">Company</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">About</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Careers</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Contact</a></li>
-              <li><a href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Privacy</a></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">About</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Careers</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Contact</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-white text-sm transition-colors duration-200">Privacy</Link></li>
             </ul>
           </div>
         </div>
