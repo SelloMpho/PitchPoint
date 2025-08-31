@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'; 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
+import Image from 'next/image';
 
 // Define TypeScript interfaces for type safety
 interface User {
@@ -233,7 +233,13 @@ export default function InvestorDashboard() {
                 <div className="lg:w-1/4 mb-6 lg:mb-0 lg:pr-6">
                   <div className="bg-gradient-to-br from-indigo-900/20 to-purple-900/20 rounded-xl h-32 w-32 flex items-center justify-center border border-slate-700/50 mx-auto lg:mx-0">
                     {user?.profilePicture ? (
-                      <img src={user.profilePicture} alt="Profile" className="h-32 w-32 rounded-xl object-cover" />
+                      <Image 
+                        src={user.profilePicture} 
+                        alt="Profile" 
+                        width={128}
+                        height={128}
+                        className="h-32 w-32 rounded-xl object-cover"
+                      />
                     ) : (
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -344,7 +350,13 @@ export default function InvestorDashboard() {
                   <div key={startup._id} className="glass-effect rounded-2xl overflow-hidden border border-slate-700/50 backdrop-blur-sm hover:transform hover:scale-105 transition-all duration-300">
                     <div className="h-32 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center border-b border-slate-700/50">
                       {startup.logo ? (
-                        <img src={startup.logo} alt={`${startup.name} logo`} className="h-full w-full object-cover" />
+                        <Image 
+                          src={startup.logo} 
+                          alt={`${startup.name} logo`} 
+                          width={128}
+                          height={128}
+                          className="h-full w-full object-cover"
+                        />
                       ) : (
                         <span className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                           {startup.name.substring(0, 2).toUpperCase()}
@@ -432,7 +444,13 @@ export default function InvestorDashboard() {
                   <div key={startup._id} className="glass-effect rounded-2xl overflow-hidden border border-slate-700/50 backdrop-blur-sm hover:transform hover:scale-105 transition-all duration-300">
                     <div className="h-32 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center border-b border-slate-700/50">
                       {startup.logo ? (
-                        <img src={startup.logo} alt={`${startup.name} logo`} className="h-full w-full object-cover" />
+                        <Image 
+                          src={startup.logo} 
+                          alt={`${startup.name} logo`} 
+                          width={128}
+                          height={128}
+                          className="h-full w-full object-cover"
+                        />
                       ) : (
                         <span className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                           {startup.name.substring(0, 2).toUpperCase()}

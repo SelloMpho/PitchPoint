@@ -6,14 +6,46 @@ import Link from 'next/link';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 
+// Define proper TypeScript interfaces instead of 'any'
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+}
+
+interface Message {
+  _id: string;
+  sender: string;
+  content: string;
+  createdAt: string;
+}
+
+interface Conversation {
+  _id: string;
+  otherUser: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+  };
+  lastMessage: {
+    content: string;
+    createdAt: string;
+    sender: string;
+  };
+  unreadCount: number;
+}
+
 export default function MessagesPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [user, setUser] = useState<any>(null);
-  const [conversations, setConversations] = useState<any[]>([]);
-  const [activeConversation, setActiveConversation] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -25,45 +57,9 @@ export default function MessagesPage() {
       return;
     }
 
-    const fetchUserAndConversations = async () => {
-      try {
-        // Fetch user data
-        const userResponse = await fetch('http://localhost:5000/api/auth/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!userResponse.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const userData = await userResponse.json();
-        setUser(userData);
-
-        // Fetch conversations
-        const conversationsResponse = await fetch('http://localhost:5000/api/messages/conversations', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!conversationsResponse.ok) {
-          throw new Error('Failed to fetch conversations');
-        }
-
-        const conversationsData = await conversationsResponse.json();
-        setConversations(conversationsData);
-      } catch (err: any) {
-        setError(err.message || 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     // For now, we'll use mock data
     setTimeout(() => {
-      const mockUser = {
+      const mockUser: User = {
         _id: 'user123',
         firstName: 'John',
         lastName: 'Doe',
@@ -72,7 +68,7 @@ export default function MessagesPage() {
       };
       setUser(mockUser);
 
-      const mockConversations = [
+      const mockConversations: Conversation[] = [
         {
           _id: 'conv1',
           otherUser: {
@@ -123,8 +119,6 @@ export default function MessagesPage() {
       setLoading(false);
     }, 1000);
     
-    // Uncomment to use real API
-    // fetchUserAndConversations();
   }, [router]);
 
   useEffect(() => {
@@ -137,37 +131,8 @@ export default function MessagesPage() {
     if (!token) return;
 
     try {
-      // In a real app, this would fetch messages from the API
-      // const response = await fetch(`http://localhost:5000/api/messages/conversation/${conversationId}`, {
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`
-      //   }
-      // });
-      
-      // if (!response.ok) {
-      //   throw new Error('Failed to fetch messages');
-      // }
-      
-      // const data = await response.json();
-      // setMessages(data);
-      
-      // Mark messages as read
-      // await fetch(`http://localhost:5000/api/messages/read/${conversationId}`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`
-      //   }
-      // });
-      
-      // Update unread count in conversations
-      // setConversations(prev => 
-      //   prev.map(conv => 
-      //     conv._id === conversationId ? { ...conv, unreadCount: 0 } : conv
-      //   )
-      // );
-
       // Simulate API call with mock data
-      const mockMessages = [
+      const mockMessages: Message[] = [
         {
           _id: 'msg1',
           sender: conversationId === 'conv1' ? 'user456' : (conversationId === 'conv2' ? 'user789' : 'user101'),
@@ -225,7 +190,7 @@ export default function MessagesPage() {
     }
   };
 
-  const handleConversationClick = (conversation: any) => {
+  const handleConversationClick = (conversation: Conversation) => {
     setActiveConversation(conversation);
     fetchMessages(conversation._id);
   };
@@ -241,51 +206,13 @@ export default function MessagesPage() {
     setSendingMessage(true);
     
     try {
-      // In a real app, this would send a message to the API
-      // const response = await fetch('http://localhost:5000/api/messages/send', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`,
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     recipient: activeConversation.otherUser._id,
-      //     content: newMessage
-      //   })
-      // });
-      
-      // if (!response.ok) {
-      //   throw new Error('Failed to send message');
-      // }
-      
-      // const data = await response.json();
-      
-      // Add new message to the list
-      // setMessages(prev => [...prev, data]);
-      
-      // Update last message in conversations
-      // setConversations(prev => 
-      //   prev.map(conv => 
-      //     conv._id === activeConversation._id 
-      //       ? { 
-      //           ...conv, 
-      //           lastMessage: {
-      //             content: newMessage,
-      //             createdAt: new Date().toISOString(),
-      //             sender: user._id
-      //           } 
-      //         } 
-      //       : conv
-      //   )
-      // );
-
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
       
       // Create a new message object
-      const newMessageObj = {
+      const newMessageObj: Message = {
         _id: `msg${Date.now()}`,
-        sender: user._id,
+        sender: user!._id,
         content: newMessage,
         createdAt: new Date().toISOString()
       };
@@ -302,7 +229,7 @@ export default function MessagesPage() {
                 lastMessage: {
                   content: newMessage,
                   createdAt: new Date().toISOString(),
-                  sender: user._id
+                  sender: user!._id
                 } 
               } 
             : conv
@@ -407,7 +334,7 @@ export default function MessagesPage() {
                   
                   <div className="flex justify-between items-center">
                     <p className="text-sm text-gray-600 truncate" style={{ maxWidth: '80%' }}>
-                      {conversation.lastMessage.sender === user._id ? (
+                      {conversation.lastMessage.sender === user?._id ? (
                         <span className="text-gray-400 mr-1">You:</span>
                       ) : null}
                       {conversation.lastMessage.content}
@@ -449,13 +376,13 @@ export default function MessagesPage() {
                 {messages.map(message => (
                   <div 
                     key={message._id}
-                    className={`mb-4 flex ${message.sender === user._id ? 'justify-end' : 'justify-start'}`}
+                    className={`mb-4 flex ${message.sender === user?._id ? 'justify-end' : 'justify-start'}`}
                   >
                     <div 
-                      className={`max-w-xs md:max-w-md lg:max-w-lg rounded-lg p-3 ${message.sender === user._id ? 'bg-indigo-600 text-white' : 'bg-white text-gray-800'}`}
+                      className={`max-w-xs md:max-w-md lg:max-w-lg rounded-lg p-3 ${message.sender === user?._id ? 'bg-indigo-600 text-white' : 'bg-white text-gray-800'}`}
                     >
                       <p>{message.content}</p>
-                      <p className={`text-xs mt-1 text-right ${message.sender === user._id ? 'text-indigo-200' : 'text-gray-500'}`}>
+                      <p className={`text-xs mt-1 text-right ${message.sender === user?._id ? 'text-indigo-200' : 'text-gray-500'}`}>
                         {formatDate(message.createdAt)}
                       </p>
                     </div>

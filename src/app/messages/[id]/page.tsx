@@ -1,19 +1,37 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
 
-export default function ConversationPage({ params }: { params: { id: string } }) {
+// Define proper TypeScript interfaces instead of 'any'
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  company?: string;
+}
+
+interface Message {
+  _id: string;
+  sender: string;
+  content: string;
+  createdAt: string;
+}
+
+export default function ConversationPage() {
   const router = useRouter();
-  const conversationId = params.id;
+  const params = useParams();
+  const conversationId = params.id as string;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [user, setUser] = useState<any>(null);
-  const [otherUser, setOtherUser] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [otherUser, setOtherUser] = useState<User | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [sendingMessage, setSendingMessage] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -25,54 +43,9 @@ export default function ConversationPage({ params }: { params: { id: string } })
       return;
     }
 
-    const fetchUserAndMessages = async () => {
-      try {
-        // Fetch user data
-        const userResponse = await fetch('http://localhost:5000/api/auth/me', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!userResponse.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-
-        const userData = await userResponse.json();
-        setUser(userData);
-
-        // Fetch conversation messages
-        const messagesResponse = await fetch(`http://localhost:5000/api/messages/conversation/${conversationId}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!messagesResponse.ok) {
-          throw new Error('Failed to fetch messages');
-        }
-
-        const messagesData = await messagesResponse.json();
-        setMessages(messagesData.messages);
-        setOtherUser(messagesData.otherUser);
-        
-        // Mark messages as read
-        await fetch(`http://localhost:5000/api/messages/read/${conversationId}`, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-      } catch (err: any) {
-        setError(err.message || 'An error occurred');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     // For now, we'll use mock data
     setTimeout(() => {
-      const mockUser = {
+      const mockUser: User = {
         _id: 'user123',
         firstName: 'John',
         lastName: 'Doe',
@@ -81,16 +54,17 @@ export default function ConversationPage({ params }: { params: { id: string } })
       };
       setUser(mockUser);
 
-      const mockOtherUser = {
+      const mockOtherUser: User = {
         _id: 'user456',
         firstName: 'Michael',
         lastName: 'Johnson',
+        email: 'johnson@example.com',
         role: 'investor',
         company: 'Venture Capital Partners'
       };
       setOtherUser(mockOtherUser);
 
-      const mockMessages = [
+      const mockMessages: Message[] = [
         {
           _id: 'msg1',
           sender: 'user456',
@@ -138,8 +112,6 @@ export default function ConversationPage({ params }: { params: { id: string } })
       setLoading(false);
     }, 1000);
     
-    // Uncomment to use real API
-    // fetchUserAndMessages();
   }, [router, conversationId]);
 
   useEffect(() => {
@@ -158,33 +130,13 @@ export default function ConversationPage({ params }: { params: { id: string } })
     setSendingMessage(true);
     
     try {
-      // In a real app, this would send a message to the API
-      // const response = await fetch('http://localhost:5000/api/messages/send', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`,
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     recipient: otherUser._id,
-      //     content: newMessage
-      //   })
-      // });
-      
-      // if (!response.ok) {
-      //   throw new Error('Failed to send message');
-      // }
-      
-      // const data = await response.json();
-      // setMessages(prev => [...prev, data]);
-
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 500));
       
       // Create a new message object
-      const newMessageObj = {
+      const newMessageObj: Message = {
         _id: `msg${Date.now()}`,
-        sender: user._id,
+        sender: user!._id,
         content: newMessage,
         createdAt: new Date().toISOString()
       };
@@ -329,13 +281,13 @@ export default function ConversationPage({ params }: { params: { id: string } })
             messages.map(message => (
               <div 
                 key={message._id}
-                className={`mb-4 flex ${message.sender === user._id ? 'justify-end' : 'justify-start'}`}
+                className={`mb-4 flex ${message.sender === user?._id ? 'justify-end' : 'justify-start'}`}
               >
                 <div 
-                  className={`max-w-xs md:max-w-md lg:max-w-lg rounded-lg p-3 ${message.sender === user._id ? 'bg-indigo-600 text-white' : 'bg-white text-gray-800'}`}
+                  className={`max-w-xs md:max-w-md lg:max-w-lg rounded-lg p-3 ${message.sender === user?._id ? 'bg-indigo-600 text-white' : 'bg-white text-gray-800'}`}
                 >
                   <p>{message.content}</p>
-                  <p className={`text-xs mt-1 text-right ${message.sender === user._id ? 'text-indigo-200' : 'text-gray-500'}`}>
+                  <p className={`text-xs mt-1 text-right ${message.sender === user?._id ? 'text-indigo-200' : 'text-gray-500'}`}>
                     {formatDate(message.createdAt)}
                   </p>
                 </div>

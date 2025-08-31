@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link'; 
+import Image from 'next/image';
 
 // Define TypeScript interfaces for type safety
 interface TeamMember {
@@ -281,7 +282,13 @@ export default function StartupDetail() {
             <div className="flex items-center mb-6 lg:mb-0">
               <div className="h-16 w-16 md:h-20 md:w-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mr-6">
                 {startup.logo ? (
-                  <img src={startup.logo} alt={`${startup.name} logo`} className="h-12 md:h-16 w-12 md:w-16 rounded-full object-cover" />
+                  <Image 
+                    src={startup.logo} 
+                    alt={`${startup.name} logo`} 
+                    width={64}
+                    height={64}
+                    className="h-12 md:h-16 w-12 md:w-16 rounded-full object-cover"
+                  />
                 ) : (
                   <span className="text-xl md:text-2xl font-bold text-white">{startup.name.substring(0, 2).toUpperCase()}</span>
                 )}

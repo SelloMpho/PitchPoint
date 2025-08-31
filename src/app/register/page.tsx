@@ -1,8 +1,22 @@
 'use client'; 
 import { useState, useEffect } from 'react'; 
-import Link from 'next/link'
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+
+// Define proper TypeScript interface for form data
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: string;
+  startupName: string;
+  industry: string;
+  investmentFocus: string;
+  investmentAmount: string;
+}
 
 export default function Register() {
   const router = useRouter();
@@ -10,17 +24,15 @@ export default function Register() {
   const defaultRole = searchParams?.get('role') || '';
   
   const [activeForm, setActiveForm] = useState(defaultRole || 'entrepreneur');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
     role: defaultRole,
-    // Entrepreneur-specific fields
     startupName: '',
     industry: '',
-    // Investor-specific fields
     investmentFocus: '',
     investmentAmount: '',
   });
@@ -91,7 +103,7 @@ export default function Register() {
     
     try {
       // Step 1: Sign up with Supabase Auth
-      const {  data, error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -113,15 +125,11 @@ export default function Register() {
       });
 
       if (error) {
-      // Handle specific error codes
-      if (error.message.includes('Email not confirmed')) {
-        setErrors({ form: 'Please check your email to confirm your account.' });
-        return;
-      }
-      throw error;
-    }
-
-      if (error) {
+        // Handle specific error codes
+        if (error.message.includes('Email not confirmed')) {
+          setErrors({ form: 'Please check your email to confirm your account.' });
+          return;
+        }
         throw error;
       }
 

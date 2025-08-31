@@ -3,16 +3,28 @@
 import { useState } from 'react';
 import { useNotification } from '../../context/NotificationContext';
 
+// Define proper type for additionalData instead of using 'any'
+interface AdditionalData {
+  [key: string]: unknown;
+}
+
 type ContactFormProps = {
   recipientId: string;
   recipientName: string;
   recipientType?: string;
   onSuccess?: () => void;
   onClose?: () => void;
-  additionalData?: Record<string, any>;
+  additionalData?: AdditionalData;
 };
 
-export default function ContactForm({ recipientId, recipientName, onClose, onSuccess, recipientType, additionalData }: ContactFormProps) {
+export default function ContactForm({ 
+  recipientId, 
+  recipientName, 
+  onClose, 
+  onSuccess, 
+  recipientType, 
+  additionalData 
+}: ContactFormProps) {
   const [message, setMessage] = useState('');
   const [subject, setSubject] = useState('');
   const [sending, setSending] = useState(false);
@@ -32,24 +44,6 @@ export default function ContactForm({ recipientId, recipientName, onClose, onSuc
     setSending(true);
     
     try {
-      // In a real app, this would send a message to the API
-      // const response = await fetch('http://localhost:5000/api/messages/send', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': `Bearer ${token}`,
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     recipient: recipientId,
-      //     subject,
-      //     content: message
-      //   })
-      // });
-      
-      // if (!response.ok) {
-      //   throw new Error('Failed to send message');
-      // }
-      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
@@ -59,8 +53,10 @@ export default function ContactForm({ recipientId, recipientName, onClose, onSuc
        } else if (onClose) {
          onClose();
        }
-    } catch (err: any) {
-      showNotification(err.message || 'Failed to send message', 'error');
+    } catch (err: unknown) {
+      // Handle error properly with type checking
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send message';
+      showNotification(errorMessage, 'error');
     } finally {
       setSending(false);
     }

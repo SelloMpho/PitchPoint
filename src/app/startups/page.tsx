@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'; 
+import Image from 'next/image';
 
 // Define TypeScript interfaces for type safety
 interface Startup {
@@ -401,7 +402,13 @@ export default function StartupsListing() {
                 <div key={startup._id} className="glass-effect rounded-2xl overflow-hidden border border-slate-700/50 backdrop-blur-sm hover:transform hover:scale-105 transition-all duration-300 group">
                   <div className="h-32 bg-gradient-to-br from-indigo-900/20 to-purple-900/20 flex items-center justify-center border-b border-slate-700/50">
                     {startup.logo ? (
-                      <img src={startup.logo} alt={`${startup.name} logo`} className="h-full w-full object-cover" />
+                      <Image 
+                        src={startup.logo} 
+                        alt={`${startup.name} logo`} 
+                        width={128}
+                        height={128}
+                        className="h-full w-full object-cover"
+                      />
                     ) : (
                       <span className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
                         {startup.name.substring(0, 2).toUpperCase()}

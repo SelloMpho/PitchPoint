@@ -2,13 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import MessageNotification from '../common/MessageNotification';
+
+// Define proper TypeScript interface for user data
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+}
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   
   useEffect(() => {
     // Check if user is logged in
@@ -18,7 +26,7 @@ const Navbar = () => {
       
       // In a real app, we would fetch the user data from the API
       // For now, we'll use mock data
-      const mockUser = {
+      const mockUser: User = {
         _id: 'user123',
         firstName: 'John',
         lastName: 'Doe',

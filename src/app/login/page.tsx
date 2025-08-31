@@ -3,10 +3,24 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+// Define proper types instead of 'any'
+interface AuthData {
+  data: {
+    user: {
+      id: string;
+    };
+  } | null;
+  error: Error | null;
+}
+
+interface UserData {
+  role: string;
+}
+
 // Mock supabase for demo purposes
 const mockSupabase = {
   auth: {
-    signInWithPassword: async ({ email, password }: { email: string; password: string }) => {
+    signInWithPassword: async ({ email, password }: { email: string; password: string }): Promise<AuthData> => {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
@@ -39,7 +53,10 @@ const mockSupabase = {
           error: null
         };
       } else {
-        throw new Error('Invalid email or password');
+        return {
+          data: null,
+          error: new Error('Invalid email or password')
+        };
       }
     },
     signInWithOAuth: async ({ provider, options }: { provider: string; options: { redirectTo: string } }) => {
@@ -51,7 +68,7 @@ const mockSupabase = {
   from: (table: string) => ({
     select: (columns: string) => ({
       eq: (column: string, value: string) => ({
-        single: async () => {
+        single: async (): Promise<{ data: UserData | null; error: Error | null }> => {
           // Simulate API call
           await new Promise(resolve => setTimeout(resolve, 500));
           
@@ -63,7 +80,7 @@ const mockSupabase = {
           } else if (value === 'user3') {
             return { data: { role: 'admin' }, error: null };
           } else {
-            return { data: null, error: { message: 'User not found' } };
+            return { data: null, error: { message: 'User not found' } as Error };
           }
         }
       })
@@ -75,7 +92,8 @@ export default function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const justRegistered = searchParams ? searchParams.get('registered') === 'true' : false;
-  const defaultRole = searchParams?.get('role') || '';
+  // Fixed: Removed unused defaultRole variable
+  // const defaultRole = searchParams?.get('role') || '';
   
   const [formData, setFormData] = useState({
     email: '',
@@ -151,7 +169,7 @@ export default function Login() {
       const { data: userData, error: userError } = await mockSupabase
         .from('users')
         .select('role')
-        .eq('id', data.user.id)
+        .eq('id', data!.user.id)
         .single();
 
       if (userError) {
@@ -162,11 +180,11 @@ export default function Login() {
       }
 
       // Redirect based on user role
-      if (userData.role === 'entrepreneur') {
+      if (userData?.role === 'entrepreneur') {
         router.push('/dashboard/entrepreneur');
-      } else if (userData.role === 'investor') {
+      } else if (userData?.role === 'investor') {
         router.push('/dashboard/investor');
-      } else if (userData.role === 'admin') {
+      } else if (userData?.role === 'admin') {
         router.push('/admin');
       } else {
         router.push('/dashboard');
@@ -304,7 +322,7 @@ export default function Login() {
               Sign in to your PitchPoint account
             </p>
             <p className="mt-4 text-slate-400">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register" className="font-semibold text-emerald-400 hover:text-emerald-300 transition-colors duration-200">
                 Sign up here
               </Link>
