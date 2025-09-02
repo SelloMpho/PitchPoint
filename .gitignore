@@ -1,81 +1,305 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
+# ========================================
+# DEPENDENCIES
+# ========================================
+node_modules/
 /.pnp
 .pnp.js
+.pnp.loader.mjs
 
-# testing
-/coverage
+# Yarn v2+
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
-# next.js
-/.next
-/out/
+# Package lock files (keep only one per project)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# production
-/build
-/dist
+# ========================================
+# NEXT.JS SPECIFIC
+# ========================================
+.next/
+out/
+build/
+dist/
 
-# misc
-*.pem
+# Next.js cache
+.next/cache/
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# env files
-.env*
+# ========================================
+# ENVIRONMENT VARIABLES
+# ========================================
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.staging
+.env.*.local
 
-# vercel
-.vercel
+# ========================================
+# TESTING
+# ========================================
+coverage/
+.nyc_output/
+junit.xml
+*.lcov
 
-# typescript
+# Jest
+jest-results.json
+.jest-cache/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ========================================
+# PRODUCTION & BUILD
+# ========================================
+build/
+dist/
+*.tgz
+
+# Static files
+public/sitemap*.xml
+public/robots.txt
+public/sw.js
+public/workbox-*.js
+
+# ========================================
+# TYPESCRIPT
+# ========================================
 *.tsbuildinfo
 next-env.d.ts
+.tscache/
 
-# OS generated files
+# ========================================
+# DEVELOPMENT & DEBUGGING
+# ========================================
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+lib-cov/
+
+# Grunt intermediate storage
+.grunt/
+
+# Bower dependency directory
+bower_components/
+
+# ========================================
+# DEPLOYMENT
+# ========================================
+# Vercel
+.vercel/
+.vercel
+
+# Netlify
+.netlify/
+
+# AWS
+.aws/
+
+# Railway
+.railway/
+
+# ========================================
+# OPERATING SYSTEM
+# ========================================
+# macOS
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
+Icon?
+.AppleDouble
+.LSOverride
 
-# IDE files
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ========================================
+# IDE & EDITOR FILES
+# ========================================
+# VS Code
 .vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IntelliJ IDEA
 .idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+*.sublime-workspace
+*.sublime-project
+
+# Vim
 *.swp
 *.swo
+*.tmp
 *~
+.netrwhist
 
-# Logs
-logs
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ========================================
+# LOGS & TEMPORARY FILES
+# ========================================
+logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# Temporary folders
+tmp/
+temp/
+.tmp/
 
-# parcel-bundler cache
-.cache
-.parcel-cache
+# ========================================
+# SECURITY & CERTIFICATES
+# ========================================
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+
+# ========================================
+# DATABASE
+# ========================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ========================================
+# CACHE & BUILD TOOLS
+# ========================================
+# Parcel
+.cache/
+.parcel-cache/
+
+# Webpack
+.webpack/
+
+# Turbo
+.turbo/
+
+# Storybook build outputs
+storybook-static/
+
+# ESLint cache
+.eslintcache
 
 # Optional npm cache directory
-.npm
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
 
 # Optional REPL history
 .node_repl_history
 
-# Output of 'npm pack'
-*.tgz
-
 # Yarn Integrity file
 .yarn-integrity
+
+# ========================================
+# MEDIA & UPLOADS
+# ========================================
+# Ignore uploaded files (add specific patterns as needed)
+uploads/
+media/
+public/uploads/
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# ========================================
+# MONITORING & ANALYTICS
+# ========================================
+# Sentry
+.sentryclirc
+
+# Lighthouse CI
+.lighthouseci/
+
+# ========================================
+# CUSTOM PROJECT FILES
+# ========================================
+# Add your project-specific ignore patterns here
+# Example:
+# /custom-config/
+# *.local.json
+
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Documentation builds
+docs/build/
+docs/_build/
